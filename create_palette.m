@@ -51,9 +51,7 @@ for i = 1:length(imageFiles)
         
     elseif size(bboxes, 1) == 1
         croppedImg = imcrop(img, bboxes);
-    end
-        
-    if size(bboxes, 1) == 0
+    else
         warning('No people detected in image: %s', imageFiles(i).name);
     end
     
