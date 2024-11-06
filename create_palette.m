@@ -27,30 +27,21 @@ for i = 1:length(imageFiles)
     if ~isempty(bboxes)
         % Check if at least two bounding boxes were found
         if size(bboxes, 1) > 1
-            % Calculate area of each bounding box
             areas = bboxes(:, 3) .* bboxes(:, 4);
-
-            % Find indices of the two largest bounding boxes
             [~, sortedIdx] = sort(areas, 'descend');
             largestBBox1 = bboxes(sortedIdx(1), :);
             largestBBox2 = bboxes(sortedIdx(2), :);
-
-            % Calculate the combined bounding box
+            
+            % Calculate combined bounding box
             xMin = min(largestBBox1(1), largestBBox2(1));
             yMin = min(largestBBox1(2), largestBBox2(2));
             xMax = max(largestBBox1(1) + largestBBox1(3), largestBBox2(1) + largestBBox2(3));
             yMax = max(largestBBox1(2) + largestBBox1(4), largestBBox2(2) + largestBBox2(4));
-
-            % Width and height of the combined bounding box
-            combinedWidth = xMax - xMin;
-            combinedHeight = yMax - yMin;
-
-            % Create the combined bounding box and crop the image
-            combinedBBox = [xMin, yMin, combinedWidth, combinedHeight];
-            croppedImg = imcrop(img, combinedBBox);
+            combinedBBox = [xMin, yMin, xMax - xMin, yMax - yMin];
         else
-            croppedImg = imcrop(img, bboxes);
+            combinedBBox = bboxes(1, :);
         end
+        croppedImg = imcrop(img, combinedBBox);
         % Convert to grayscale and segment foreground
         grayImg = rgb2gray(croppedImg);
         initialMask = false(size(grayImg));
