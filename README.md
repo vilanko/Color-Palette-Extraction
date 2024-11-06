@@ -37,7 +37,8 @@ After collecting all foreground pixels from all images, k-means clustering is us
 The dominant colors are displayed as swatches, each representing one of the k clusters identified by k-means.
 
 # Notes
-Error Handling: Warnings are issued for unreadable images and images where no people are detected.
+# Error Handling: 
+Warnings are issued for unreadable images and images where no people are detected.
 # Performance: 
 The script is optimized using preallocation and efficient MATLAB functions.
 # Requirements
